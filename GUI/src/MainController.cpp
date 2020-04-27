@@ -32,15 +32,13 @@ MainController::MainController(int argc, char * argv[])
     iclnuim = Parse::get().arg(argc, argv, "-icl", empty) > -1;
 
 
-
+    Resolution::getInstance(640, 480);
+    Intrinsics::getInstance(528, 528, 320, 240);
     Parse::get().arg(argc, argv, "-l", logFile);
 
     bool flipColors = Parse::get().arg(argc,argv,"-f",empty) > -1;
     logReader = new LiveLogReader("", flipColors, LiveLogReader::CameraType::KinectDK);
     good = ((LiveLogReader *) logReader)->cam->ok();
-    KinectDKInterface *ptr = (KinectDKInterface *) ((LiveLogReader *) logReader)->cam;
-    Resolution::getInstance(ptr->width, ptr->height);
-    Intrinsics::getInstance(ptr->fx, ptr->fy, ptr->cx, ptr->cy);
 
     if(Parse::get().arg(argc, argv, "-p", poseFile) > 0)
     {
