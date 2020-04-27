@@ -7,7 +7,10 @@
 KinectDKInterface::KinectDKInterface(int camIdx) :
         initSuccessful(true),
         capture_ptr(std::make_shared<k4a::capture>()),
-        running(true) {
+        running(true),
+        width(640),
+        height(576) {
+
     /**
      * connect to dk
      */
@@ -46,16 +49,6 @@ KinectDKInterface::KinectDKInterface(int camIdx) :
             false
     };
     k4a::calibration calibration = device.get_calibration(conf.depth_mode, conf.color_resolution);
-
-    width = calibration.color_camera_calibration.resolution_width;
-    height = calibration.color_camera_calibration.resolution_height;
-    fx = calibration.color_camera_calibration.intrinsics.parameters.param.fx;
-    cx = calibration.color_camera_calibration.intrinsics.parameters.param.cx;
-    fy = calibration.color_camera_calibration.intrinsics.parameters.param.fy;
-    cy = calibration.color_camera_calibration.intrinsics.parameters.param.cy;
-    std::cout << "width:" << width << ", height:" << height << ", fx:" << fx << ", fy:" << fy << ", cx:" << cx
-              << ", cy:"
-              << cy << std::endl;
 
     /**
      * initialize buffers

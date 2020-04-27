@@ -27,6 +27,7 @@ find_package(OpenNI2 REQUIRED)
 find_package(efusion REQUIRED)
 find_package(SuiteSparse REQUIRED)
 find_package(k4a REQUIRED)
+find_package(OpenCV REQUIRED)
 
 if(WIN32)
   find_package(RealSense QUIET)
@@ -46,6 +47,7 @@ include_directories(${CUDA_INCLUDE_DIRS})
 include_directories(${EFUSION_INCLUDE_DIR})
 include_directories(${OPENNI2_INCLUDE_DIR})
 include_directories(${k4a_INCLUDE_DIRS})
+include_directories(${OpenCV_INCLUDE_DIRS})
 
 if(WITH_REALSENSE)
   include_directories(${REALSENSE_INCLUDE_DIR})
@@ -93,6 +95,7 @@ target_link_libraries(ElasticFusion
                       ${BLAS_LIBRARIES}
                       ${LAPACK_LIBRARIES}
         ${PROJECT_SOURCE_DIR}/lib/libk4a.so.1.1
+        ${OpenCV_LIBS}
 )
 
 

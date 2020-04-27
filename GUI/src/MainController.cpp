@@ -33,9 +33,9 @@ MainController::MainController(int argc, char * argv[])
 
 
 //    Resolution::getInstance(640, 480);
-    Resolution::getInstance(1280, 720);
+    Resolution::getInstance(640, 576);
 //    Intrinsics::getInstance(528, 528, 320, 240);
-    Intrinsics::getInstance(608.211, 608.022, 638.741, 366.289);
+    Intrinsics::getInstance(504.82, 504.86, 314.01, 335.08);
     Parse::get().arg(argc, argv, "-l", logFile);
 
     bool flipColors = Parse::get().arg(argc,argv,"-f",empty) > -1;

@@ -10,6 +10,8 @@
 #include <string>
 #include <iostream>
 #include <memory>
+#include <opencv2/opencv.hpp>
+#include <string.h>
 
 class KinectDKInterface : public CameraInterface {
 public:
@@ -45,6 +47,7 @@ public:
         }
 
         void process(k4a::image image) {
+
             lastRgbTime = std::chrono::duration_cast<std::chrono::milliseconds>(
                     std::chrono::system_clock::now().time_since_epoch()).count();
 
@@ -55,12 +58,18 @@ public:
 
             rgbBuffers[bufferIndex].second = lastRgbTime;
 
+            /**
+             * save image
+             */
+            cv::Mat color(image.get_width_pixels(), image.get_height_pixels(), CV_8UC1, image.get_buffer());
+            cv::imwrite(strcat("rgb", to_string(lastRgbTime)), color);
+
             latestRgbIndex++;
         }
     private:
-        int64_t & lastRgbTime;
-        ThreadMutexObject<int> & latestRgbIndex;
-        std::pair<uint8_t *,int64_t> * rgbBuffers;
+        int64_t &lastRgbTime;
+        ThreadMutexObject<int> &latestRgbIndex;
+        std::pair<uint8_t *, int64_t> *rgbBuffers;
     };
 
     struct DepthCallback {
@@ -101,6 +110,12 @@ public:
 
             memcpy(frameBuffers[bufferIndex].first.second, rgbBuffers[lastImageVal].first,
                    image.get_width_pixels() * image.get_height_pixels() * 3);
+
+            /**
+             * save image
+             */
+            cv::Mat depth(image.get_width_pixels(), image.get_height_pixels(), CV_8UC1, image.get_buffer());
+            cv::imwrite(strcat("depth", to_string(lastDepthTime)), depth);
 
             latestDepthIndex++;
         }
