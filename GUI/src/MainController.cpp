@@ -32,8 +32,10 @@ MainController::MainController(int argc, char * argv[])
     iclnuim = Parse::get().arg(argc, argv, "-icl", empty) > -1;
 
 
-    Resolution::getInstance(640, 480);
-    Intrinsics::getInstance(528, 528, 320, 240);
+//    Resolution::getInstance(640, 480);
+    Resolution::getInstance(1280, 720);
+//    Intrinsics::getInstance(528, 528, 320, 240);
+    Intrinsics::getInstance(608.211, 608.022, 638.741, 366.289);
     Parse::get().arg(argc, argv, "-l", logFile);
 
     bool flipColors = Parse::get().arg(argc,argv,"-f",empty) > -1;

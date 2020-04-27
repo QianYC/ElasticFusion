@@ -6,7 +6,8 @@
 
 KinectDKInterface::KinectDKInterface(int camIdx) :
         initSuccessful(true),
-        capture_ptr(std::make_shared<k4a::capture>()) {
+        capture_ptr(std::make_shared<k4a::capture>()),
+        running(true) {
     /**
      * connect to dk
      */
@@ -88,13 +89,16 @@ KinectDKInterface::KinectDKInterface(int camIdx) :
     /**
      * start the worker
      */
+    std::cout << "start the worker" << std::endl;
     worker = std::thread([&] {
         std::unique_lock <std::mutex> lk(mtx);
         while (true) {
+            std::cout << "loop" << std::endl;
             if (!running) {
                 break;
             }
             if (device.get_capture(capture_ptr.get(), std::chrono::milliseconds(K4A_WAIT_INFINITE))) {
+                std::cout << "get a frame" << std::endl;
                 lk.unlock();
                 rgbCallback->process(capture_ptr->get_color_image());
                 depthCallback->process(capture_ptr->get_depth_image());
