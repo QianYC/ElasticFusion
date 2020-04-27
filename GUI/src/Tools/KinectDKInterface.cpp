@@ -11,7 +11,7 @@ KinectDKInterface::KinectDKInterface(int camIdx) :
      * connect to dk
      */
     uint32_t count = k4a::device::get_installed_count();
-    cout << "found " << count << " device" << endl;
+    std::cout << "found " << count << " device" << std::endl;
     if (count < 1) {
         errorText = "found no device!";
         initSuccessful = false;
@@ -95,8 +95,8 @@ KinectDKInterface::KinectDKInterface(int camIdx) :
             }
             if (device.get_capture(capture_ptr.get(), std::chrono::milliseconds(K4A_WAIT_INFINITE))) {
                 lk.unlock();
-                rgbCallback(capture_ptr->get_color_image());
-                depthCallback(capture_ptr->get_depth_image());
+                rgbCallback->(capture_ptr->get_color_image());
+                depthCallback->(capture_ptr->get_depth_image());
                 lk.lock();
             }
         }
