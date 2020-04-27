@@ -44,7 +44,7 @@ public:
 
         }
 
-        void operator()(k4a::image image) {
+        void process(k4a::image image) {
             lastRgbTime = std::chrono::duration_cast<std::chrono::milliseconds>(
                     std::chrono::system_clock::now().time_since_epoch()).count();
 
@@ -78,7 +78,7 @@ public:
 
         }
 
-        void operator()(k4a::image image) {
+        void process(k4a::image image) {
             lastDepthTime = std::chrono::duration_cast<std::chrono::milliseconds>(
                     std::chrono::system_clock::now().time_since_epoch()).count();
 

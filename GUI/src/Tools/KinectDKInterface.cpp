@@ -52,8 +52,9 @@ KinectDKInterface::KinectDKInterface(int camIdx) :
     cx = calibration.color_camera_calibration.intrinsics.parameters.param.cx;
     fy = calibration.color_camera_calibration.intrinsics.parameters.param.fy;
     cy = calibration.color_camera_calibration.intrinsics.parameters.param.cy;
-    cout << "width:" << width << ", height:" << height << ", fx:" << fx << ", fy:" << fy << ", cx:" << cx << ", cy:"
-         << cy << endl;
+    std::cout << "width:" << width << ", height:" << height << ", fx:" << fx << ", fy:" << fy << ", cx:" << cx
+              << ", cy:"
+              << cy << std::endl;
 
     /**
      * initialize buffers
@@ -95,8 +96,8 @@ KinectDKInterface::KinectDKInterface(int camIdx) :
             }
             if (device.get_capture(capture_ptr.get(), std::chrono::milliseconds(K4A_WAIT_INFINITE))) {
                 lk.unlock();
-                rgbCallback->(capture_ptr->get_color_image());
-                depthCallback->(capture_ptr->get_depth_image());
+                rgbCallback->process(capture_ptr->get_color_image());
+                depthCallback->process(capture_ptr->get_depth_image());
                 lk.lock();
             }
         }
