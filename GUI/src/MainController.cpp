@@ -31,43 +31,16 @@ MainController::MainController(int argc, char * argv[])
     std::string empty;
     iclnuim = Parse::get().arg(argc, argv, "-icl", empty) > -1;
 
-    std::string calibrationFile;
-    Parse::get().arg(argc, argv, "-cal", calibrationFile);
 
-    Resolution::getInstance(640, 480);
-
-    if(calibrationFile.length())
-    {
-        loadCalibration(calibrationFile);
-    }
-    else
-    {
-        Intrinsics::getInstance(528, 528, 320, 240);
-    }
 
     Parse::get().arg(argc, argv, "-l", logFile);
 
-    if(logFile.length())
-    {
-        logReader = new RawLogReader(logFile, Parse::get().arg(argc, argv, "-f", empty) > -1);
-    }
-    else
-    {
-        bool flipColors = Parse::get().arg(argc,argv,"-f",empty) > -1;
-        logReader = new LiveLogReader(logFile, flipColors, LiveLogReader::CameraType::OpenNI2);
-
-        good = ((LiveLogReader *)logReader)->cam->ok();
-
-#ifdef WITH_REALSENSE
-        if(!good)
-        {
-          delete logReader;
-          logReader = new LiveLogReader(logFile, flipColors, LiveLogReader::CameraType::RealSense);
-
-          good = ((LiveLogReader *)logReader)->cam->ok();
-        }
-#endif
-    }
+    bool flipColors = Parse::get().arg(argc,argv,"-f",empty) > -1;
+    logReader = new LiveLogReader("", flipColors, LiveLogReader::CameraType::KinectDK);
+    good = ((LiveLogReader *) logReader)->cam->ok();
+    KinectDKInterface *ptr = (KinectDKInterface *) ((LiveLogReader *) logReader)->cam;
+    Resolution::getInstance(ptr->width, ptr->height);
+    Intrinsics::getInstance(ptr->fx, ptr->fy, ptr->cx, ptr->cy);
 
     if(Parse::get().arg(argc, argv, "-p", poseFile) > 0)
     {

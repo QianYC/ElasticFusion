@@ -18,11 +18,13 @@
 
 #include <ElasticFusion.h>
 #include <Utils/Parse.h>
+#include <k4a/k4a.hpp>
 
 #include "Tools/GUI.h"
 #include "Tools/GroundTruthOdometry.h"
 #include "Tools/RawLogReader.h"
 #include "Tools/LiveLogReader.h"
+#include "Tools/KinectDKInterface.hpp"
 
 #ifndef MAINCONTROLLER_H_
 #define MAINCONTROLLER_H_

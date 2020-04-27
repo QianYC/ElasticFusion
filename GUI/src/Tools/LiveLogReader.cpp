@@ -20,44 +20,46 @@
 
 #include "OpenNI2Interface.h"
 #include "RealSenseInterface.h"
+#include "KinectDKInterface.hpp"
 
 LiveLogReader::LiveLogReader(std::string file, bool flipColors, CameraType type)
- : LogReader(file, flipColors),
-   lastFrameTime(-1),
-   lastGot(-1)
-{
-    std::cout << "Creating live capture... "; std::cout.flush();
+        : LogReader(file, flipColors),
+          lastFrameTime(-1),
+          lastGot(-1) {
+    std::cout << "Creating live capture... ";
+    std::cout.flush();
 
-    if(type == CameraType::OpenNI2)
-      cam = new OpenNI2Interface(Resolution::getInstance().width(),Resolution::getInstance().height());
-    else if(type == CameraType::RealSense)
-      cam = new RealSenseInterface(Resolution::getInstance().width(), Resolution::getInstance().height());
-    else
-      cam = nullptr;
+    if (type == CameraType::OpenNI2)
+        cam = new OpenNI2Interface(Resolution::getInstance().width(), Resolution::getInstance().height());
+    else if (type == CameraType::RealSense)
+        cam = new RealSenseInterface(Resolution::getInstance().width(), Resolution::getInstance().height());
+    else if (type == CameraType::KinectDK) {
+        cam = new KinectDKInterface();
+    } else {
+        cam = nullptr;
+    }
 
-	decompressionBufferDepth = new Bytef[Resolution::getInstance().numPixels() * 2];
+    decompressionBufferDepth = new Bytef[Resolution::getInstance().numPixels() * 2];
 
-	decompressionBufferImage = new Bytef[Resolution::getInstance().numPixels() * 3];
+    decompressionBufferImage = new Bytef[Resolution::getInstance().numPixels() * 3];
 
-    if(!cam || !cam->ok())
-    {
+    if (!cam || !cam->ok()) {
         std::cout << "failed!" << std::endl;
         std::cout << cam->error();
-    }
-    else
-    {
+    } else {
         std::cout << "success!" << std::endl;
 
-        std::cout << "Waiting for first frame"; std::cout.flush();
+        std::cout << "Waiting for first frame";
+        std::cout.flush();
 
         int lastDepth = cam->latestDepthIndex.getValue();
 
-        do
-        {
-          std::this_thread::sleep_for(std::chrono::microseconds(33333));
-            std::cout << "."; std::cout.flush();
+        do {
+            std::this_thread::sleep_for(std::chrono::microseconds(33333));
+            std::cout << ".";
+            std::cout.flush();
             lastDepth = cam->latestDepthIndex.getValue();
-        } while(lastDepth == -1);
+        } while (lastDepth == -1);
 
         std::cout << " got it!" << std::endl;
     }
