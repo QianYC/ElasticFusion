@@ -61,8 +61,10 @@ public:
             /**
              * save image
              */
+            std::stringstream ss;
+            ss << "rgb" << lastRgbTime;
             cv::Mat color(image.get_width_pixels(), image.get_height_pixels(), CV_8UC1, image.get_buffer());
-            cv::imwrite(strcat("rgb", to_string(lastRgbTime)), color);
+            cv::imwrite(ss.str(), color);
 
             latestRgbIndex++;
         }
@@ -114,8 +116,10 @@ public:
             /**
              * save image
              */
+            std::stringstream ss;
+            ss << "depth" << lastDepthTime;
             cv::Mat depth(image.get_width_pixels(), image.get_height_pixels(), CV_8UC1, image.get_buffer());
-            cv::imwrite(strcat("depth", to_string(lastDepthTime)), depth);
+            cv::imwrite(ss.str(), depth);
 
             latestDepthIndex++;
         }
