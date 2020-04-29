@@ -36,15 +36,21 @@ public:
     int cWidth, cHeight;
     //width height for depth image
     int dWidth, dHeight;
+    //recommended resolution
+    int width, height;
 
     struct RGBCallback {
     public:
         RGBCallback(int64_t &lastRgbTime,
                     ThreadMutexObject<int> &latestRgbIndex,
-                    std::pair<uint8_t *, int64_t> *rgbBuffers) :
+                    std::pair<uint8_t *, int64_t> *rgbBuffers,
+                    int width, int height,
+                    int cWidth, int cHeight) :
                 lastRgbTime(lastRgbTime),
                 latestRgbIndex(latestRgbIndex),
-                rgbBuffers(rgbBuffers) {
+                rgbBuffers(rgbBuffers),
+                cWidth(cWidth), cHeight(cHeight),
+                width(width), height(height) {
 
         }
 
@@ -81,6 +87,10 @@ public:
         int64_t &lastRgbTime;
         ThreadMutexObject<int> &latestRgbIndex;
         std::pair<uint8_t *, int64_t> *rgbBuffers;
+        //width height for color image
+        int cWidth, cHeight;
+        //recommended resolution
+        int width, height;
     };
 
     struct DepthCallback {
@@ -89,12 +99,18 @@ public:
                       ThreadMutexObject<int> &latestDepthIndex,
                       ThreadMutexObject<int> &latestRgbIndex,
                       std::pair<uint8_t *, int64_t> *rgbBuffers,
-                      std::pair <std::pair<uint8_t *, uint8_t *>, int64_t> *frameBuffers) :
+                      std::pair <std::pair<uint8_t *, uint8_t *>, int64_t> *frameBuffers,
+                      int width, int height,
+                      int cWidth, int cHeight,
+                      int dWidth, int dHeight) :
                 lastDepthTime(lastDepthTime),
                 latestDepthIndex(latestDepthIndex),
                 latestRgbIndex(latestRgbIndex),
                 rgbBuffers(rgbBuffers),
-                frameBuffers(frameBuffers) {
+                frameBuffers(frameBuffers),
+                width(width), height(height),
+                cWidth(cWidth), cHeight(cHeight),
+                dWidth(dWidth), dHeight(dHeight) {
 
         }
 
@@ -140,6 +156,13 @@ public:
 
         std::pair<uint8_t *, int64_t> *rgbBuffers;
         std::pair <std::pair<uint8_t *, uint8_t *>, int64_t> *frameBuffers;
+
+        //width height for color image
+        int cWidth, cHeight;
+        //width height for depth image
+        int dWidth, dHeight;
+        //recommended resolution
+        int width, height;
     };
 
 private:

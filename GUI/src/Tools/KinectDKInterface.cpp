@@ -8,6 +8,8 @@ KinectDKInterface::KinectDKInterface(int camIdx) :
         initSuccessful(true),
         capture_ptr(std::make_shared<k4a::capture>()),
         running(true),
+        width(640),
+        height(480),
         cWidth(1280),
         cHeight(720),
         dWidth(640),
@@ -72,8 +74,9 @@ KinectDKInterface::KinectDKInterface(int camIdx) :
      */
     latestDepthIndex.assign(-1);
     latestRgbIndex.assign(-1);
-    rgbCallback = new RGBCallback(lastRgbTime, latestRgbIndex, rgbBuffers);
-    depthCallback = new DepthCallback(lastDepthTime, latestDepthIndex, latestRgbIndex, rgbBuffers, frameBuffers);
+    rgbCallback = new RGBCallback(lastRgbTime, latestRgbIndex, rgbBuffers, width, height, cWidth, cHeight);
+    depthCallback = new DepthCallback(lastDepthTime, latestDepthIndex, latestRgbIndex, rgbBuffers, frameBuffers, width,
+                                      height, cWidth, cHeight, dWidth, dHeight);
 
     /**
      * start dk
