@@ -67,9 +67,14 @@ public:
             cv::Mat bgra(cHeight, cWidth, CV_8UC4, (void *) image.get_buffer());
             cv::Mat rgb;
             cv::cvtColor(bgra, rgb, cv::COLOR_BGRA2RGB);
+            /**
+             * resize
+             */
+            cv::resize(rgb, rgb, cv::Size(width, height));
 
             memcpy(rgbBuffers[bufferIndex].first, rgb.data,
-                   cWidth * cHeight * 3);
+//                   cWidth * cHeight * 3);
+                   width * height * 3);
 
             rgbBuffers[bufferIndex].second = lastRgbTime;
 
@@ -120,9 +125,15 @@ public:
 
             int bufferIndex = (latestDepthIndex.getValue() + 1) % numBuffers;
 
+            /**
+             * resize
+             */
+            cv::Mat depth(image.get_height_pixels(), image.get_width_pixels(), CV_16U, (void *) image.get_buffer());
+            cv::resize(depth, depth, cv::Size(width, height));
+
             // The multiplication by 2 is here because the depth is actually uint16_t
-            memcpy(frameBuffers[bufferIndex].first.first, image.get_buffer(),
-                   dWidth * dHeight * 2);
+//            memcpy(frameBuffers[bufferIndex].first.first, image.get_buffer(), dWidth * dHeight * 2);
+            memcpy(frameBuffers[bufferIndex].first.first, depth.data, width * height * 2);
 
             frameBuffers[bufferIndex].second = lastDepthTime;
 
@@ -136,7 +147,8 @@ public:
             lastImageVal %= numBuffers;
 
             memcpy(frameBuffers[bufferIndex].first.second, rgbBuffers[lastImageVal].first,
-                   cWidth * cHeight * 3);
+                   width * height * 3);
+//                   cWidth * cHeight * 3);
 
             /**
              * save image
