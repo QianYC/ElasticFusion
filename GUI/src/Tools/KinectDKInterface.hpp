@@ -32,8 +32,10 @@ public:
         return errorText;
     }
 
-    int width, height;
-    float fx, fy, cx, cy;
+    //width height for color image
+    int cWidth, cHeight;
+    //width height for depth image
+    int dWidth, dHeight;
 
     struct RGBCallback {
     public:
@@ -53,8 +55,15 @@ public:
 
             int bufferIndex = (latestRgbIndex.getValue() + 1) % numBuffers;
 
-            memcpy(rgbBuffers[bufferIndex].first, image.get_buffer(),
-                   image.get_size());
+            /**
+             * BGRA -> RGB
+             */
+            cv::Mat bgra(cHeight, cWidth, CV_8UC4, (void *) image.get_buffer());
+            cv::Mat rgb;
+            cv::cvtColor(bgra, rgb, cv::COLOR_BGRA2RGB);
+
+            memcpy(rgbBuffers[bufferIndex].first, rgb.data,
+                   cWidth * cHeight * 3);
 
             rgbBuffers[bufferIndex].second = lastRgbTime;
 
@@ -97,7 +106,7 @@ public:
 
             // The multiplication by 2 is here because the depth is actually uint16_t
             memcpy(frameBuffers[bufferIndex].first.first, image.get_buffer(),
-                   image.get_size());
+                   dWidth * dHeight * 2);
 
             frameBuffers[bufferIndex].second = lastDepthTime;
 
@@ -111,7 +120,7 @@ public:
             lastImageVal %= numBuffers;
 
             memcpy(frameBuffers[bufferIndex].first.second, rgbBuffers[lastImageVal].first,
-                   image.get_width_pixels() * image.get_height_pixels() * 10);
+                   cWidth * cHeight * 3);
 
             /**
              * save image
