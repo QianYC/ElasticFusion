@@ -61,8 +61,10 @@ int main() {
         }
         k4a::image color = capture_ptr->get_color_image();
         k4a::image depth = capture_ptr->get_depth_image();
-        cv::Mat mColor(color.get_width_pixels(), color.get_height_pixels(), CV_8UC1, color.get_buffer());
-        cv::Mat mDepth(depth.get_width_pixels(), depth.get_height_pixels(), CV_8UC1, depth.get_buffer());
+        cout << "rgb size : " << color.get_size() << endl;
+        cout << "depth size : " << depth.get_size() << endl;
+        cv::Mat mColor(color.get_width_pixels(), color.get_height_pixels(), CV_8UC3, color.get_buffer());
+        cv::Mat mDepth(depth.get_width_pixels(), depth.get_height_pixels(), CV_8UC2, depth.get_buffer());
 
         cv::imshow("rgb", mColor);
         cv::imshow("depth", mDepth);
