@@ -54,7 +54,7 @@ public:
             int bufferIndex = (latestRgbIndex.getValue() + 1) % numBuffers;
 
             memcpy(rgbBuffers[bufferIndex].first, image.get_buffer(),
-                   image.get_width_pixels() * image.get_height_pixels() * 3);
+                   image.get_width_pixels() * image.get_height_pixels() * 4);
 
             rgbBuffers[bufferIndex].second = lastRgbTime;
 
@@ -63,7 +63,7 @@ public:
              */
             std::stringstream ss;
             ss << "rgb" << lastRgbTime << ".jpg";
-            cv::Mat color(image.get_width_pixels(), image.get_height_pixels(), CV_8UC1, image.get_buffer());
+            cv::Mat color(image.get_width_pixels(), image.get_height_pixels(), CV_8UC4, (void *) image.get_buffer());
             cv::imwrite(ss.str(), color);
 
             latestRgbIndex++;
@@ -111,14 +111,14 @@ public:
             lastImageVal %= numBuffers;
 
             memcpy(frameBuffers[bufferIndex].first.second, rgbBuffers[lastImageVal].first,
-                   image.get_width_pixels() * image.get_height_pixels() * 3);
+                   image.get_width_pixels() * image.get_height_pixels() * 4);
 
             /**
              * save image
              */
             std::stringstream ss;
             ss << "depth" << lastDepthTime << ".jpg";
-            cv::Mat depth(image.get_width_pixels(), image.get_height_pixels(), CV_8UC1, image.get_buffer());
+            cv::Mat depth(image.get_width_pixels(), image.get_height_pixels(), CV_16U, (void *) image.get_buffer());
             cv::imwrite(ss.str(), depth);
 
             latestDepthIndex++;

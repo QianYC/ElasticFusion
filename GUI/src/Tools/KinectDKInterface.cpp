@@ -54,12 +54,12 @@ KinectDKInterface::KinectDKInterface(int camIdx) :
      * initialize buffers
      */
     for (int i = 0; i < numBuffers; i++) {
-        uint8_t *newImage = (uint8_t *) calloc(width * height * 3, sizeof(uint8_t));
+        uint8_t *newImage = (uint8_t *) calloc(width * height * 4, sizeof(uint8_t));
         rgbBuffers[i] = std::pair<uint8_t *, int64_t>(newImage, 0);
     }
     for (int i = 0; i < numBuffers; ++i) {
         uint8_t *newDepth = (uint8_t *) calloc(width * height * 2, sizeof(uint8_t));
-        uint8_t *newImage = (uint8_t *) calloc(width * height * 3, sizeof(uint8_t));
+        uint8_t *newImage = (uint8_t *) calloc(width * height * 4, sizeof(uint8_t));
         frameBuffers[i] = std::pair < std::pair < uint8_t *, uint8_t * >, int64_t >
                                                                           (std::pair<uint8_t *, uint8_t *>(newDepth,
                                                                                                            newImage), 0);
