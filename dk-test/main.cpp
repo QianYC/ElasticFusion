@@ -66,6 +66,7 @@ int main() {
         cv::Mat mColor(color.get_height_pixels(), color.get_width_pixels(), CV_8UC4, (void *) color.get_buffer());
         cv::Mat mRgb;
         cv::cvtColor(mColor, mRgb, cv::COLOR_BGRA2RGB);
+        cv::resize(mRgb, mRgb, cv::Size(640, 480));
         cout << "rgb size : " << mRgb.size << endl;
         cv::Mat mDepth(depth.get_height_pixels(), depth.get_width_pixels(), CV_16U, (void *) depth.get_buffer());
 
