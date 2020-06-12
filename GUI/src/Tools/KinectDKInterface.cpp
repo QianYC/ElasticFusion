@@ -9,7 +9,7 @@ KinectDKInterface::KinectDKInterface(int camIdx) :
         capture_ptr(std::make_shared<k4a::capture>()),
         running(true),
         width(640),
-        height(480),
+        height(576),
         cWidth(1280),
         cHeight(720),
         dWidth(640),
